@@ -22,6 +22,11 @@ import java.io.IOException;
 
 import org.apache.hadoop.hive.ql.exec.vector.LongColumnVector;
 
+/**
+ *
+ * @deprecated  As of release 1.4.1, replaced by {@link SingleBitFieldReader}
+ */
+@Deprecated
 public class BitFieldReader {
   private final RunLengthByteReader input;
   /** The number of bits in one item. Non-test code always uses 1. */

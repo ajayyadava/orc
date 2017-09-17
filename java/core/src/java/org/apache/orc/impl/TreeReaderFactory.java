@@ -96,7 +96,7 @@ public class TreeReaderFactory {
 
   public abstract static class TreeReader {
     protected final int columnId;
-    protected BitFieldReader present = null;
+    protected SingleBitFieldReader present = null;
     protected int vectorColumnCount;
     protected final Context context;
 
@@ -110,7 +110,7 @@ public class TreeReaderFactory {
       if (in == null) {
         present = null;
       } else {
-        present = new BitFieldReader(in, 1);
+        present = new SingleBitFieldReader(in);
       }
       vectorColumnCount = -1;
     }
@@ -151,7 +151,7 @@ public class TreeReaderFactory {
       if (in == null) {
         present = null;
       } else {
-        present = new BitFieldReader(in, 1);
+        present = new SingleBitFieldReader(in);
       }
     }
 
@@ -244,7 +244,7 @@ public class TreeReaderFactory {
       }
     }
 
-    public BitFieldReader getPresent() {
+    public SingleBitFieldReader getPresent() {
       return present;
     }
 
@@ -289,7 +289,7 @@ public class TreeReaderFactory {
   }
 
   public static class BooleanTreeReader extends TreeReader {
-    protected BitFieldReader reader = null;
+    protected SingleBitFieldReader reader = null;
 
     BooleanTreeReader(int columnId) throws IOException {
       this(columnId, null, null);
@@ -298,7 +298,7 @@ public class TreeReaderFactory {
     protected BooleanTreeReader(int columnId, InStream present, InStream data) throws IOException {
       super(columnId, present, null);
       if (data != null) {
-        reader = new BitFieldReader(data, 1);
+        reader = new SingleBitFieldReader(data);
       }
     }
 
@@ -307,8 +307,8 @@ public class TreeReaderFactory {
         OrcProto.StripeFooter stripeFooter
     ) throws IOException {
       super.startStripe(streams, stripeFooter);
-      reader = new BitFieldReader(streams.get(new StreamName(columnId,
-          OrcProto.Stream.Kind.DATA)), 1);
+      reader = new SingleBitFieldReader(streams.get(new StreamName(columnId,
+          OrcProto.Stream.Kind.DATA)));
     }
 
     @Override
